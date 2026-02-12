@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026春节江西5天旅游攻略</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.85;
+            font-size: 1.1rem;
+        }
+        
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-size: 1.4rem;
+            color: #1a1a2e;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .section-title:first-child {
+            margin-top: 0;
+        }
+        
+        /* Weather Cards */
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .weather-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .weather-card h4 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .weather-card .icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .weather-card .temp {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .weather-card .desc {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Tips */
+        .tips-list {
+            list-style: none;
+        }
+        
+        .tips-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            line-height: 1.6;
+        }
+        
+        .tips-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .tips-list strong {
+            color: #1a1a2e;
+        }
+        
+        /* Map Link */
+        .map-link {
+            display: block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .map-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Custom Map */
+        .custom-map {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e8f0 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(180deg, #a8d4e6 0%, #7ec8e3 30%, #5eb3d3 100%);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .map-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .city-marker {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .city-marker:hover {
+            transform: scale(1.1);
+        }
+        
+        .marker-dot {
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        
+        .city-label {
+            font-size: 12px;
+            font-weight: 600;
+            fill: #1a1a2e;
+            text-anchor: middle;
+        }
+        
+        .route-line {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 8 4;
+            animation: dash 20s linear infinite;
+        }
+        
+        @keyframes dash {
+            to { stroke-dashoffset: -240; }
+        }
+        
+        .route-drive { stroke: #34C759; }
+        .route-taxi { stroke: #FF9500; }
+        .route-metro { stroke: #007AFF; }
+        
+        .map-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+        
+        .legend-line {
+            width: 25px;
+            height: 3px;
+            border-radius: 2px;
+        }
+        
+        .legend-drive { background: #34C759; }
+        .legend-taxi { background: #FF9500; }
+        .legend-metro { background: #007AFF; }
+        
+        .spot-marker {
+            font-size: 10px;
+            fill: #666;
+        }
+        
+        /* Day Section */
+        .day-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .day-header {
+            margin-bottom: 20px;
+        }
+        
+        .day-header h3 {
+            font-size: 1.3rem;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+        
+        .day-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        /* Spot Card */
+        .spot-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .spot-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .spot-card .info {
+            padding: 20px;
+        }
+        
+        .spot-card h4 {
+            font-size: 1.15rem;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+        
+        .spot-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .spot-card .time {
+            color: #667eea;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Transport Box */
+        .transport-box {
+            background: #fff3e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .transport-box.metro {
+            background: #e3f2fd;
+        }
+        
+        .transport-box.drive {
+            background: #e8f5e9;
+        }
+        
+        .transport-box h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .transport-box p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-taxi {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .btn-taxi:hover {
+            background: #f57c00;
+        }
+        
+        .btn-navi {
+            background: #1a1a2e;
+            color: white;
+        }
+        
+        .btn-navi:hover {
+            background: #2d2d4a;
+        }
+        
+        .btn-metro {
+            background: #1976d2;
+            color: white;
+        }
+        
+        .btn-metro:hover {
+            background: #1565c0;
+        }
+        
+        .btn-drive {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn-drive:hover {
+            background: #388e3c;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #999;
+            font-size: 0.85rem;
+        }
+        
+        /* Timeline */
+        .timeline {
+            padding-left: 20px;
+            border-left: 3px solid #667eea;
+            margin: 15px 0;
+        }
+        
+        .timeline-item {
+            padding: 10px 0 10px 15px;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #667eea;
+        }
+        
+        /* Hotel Card */
+        .hotel-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .hotel-card h4 {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .hotel-card p {
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .weather-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏮 2026春节江西5天旅游攻略</h1>
+            <p>广州出发，探索赣州古城、南昌红色文化、葛仙村仙境</p>
+        </div>
+        
+        <div class="content">
+            <!-- Weather -->
+            <h2 class="section-title">🌤️ 春节期间天气预报</h2>
+            <div class="weather-grid">
+                <div class="weather-card">
+                    <h4>2月17日 · 赣州</h4>
+                    <div class="icon">☁️</div>
+                    <div class="temp">17°C / 9°C</div>
+                    <div class="desc">阴 · 东风1-3级</div>
+                </div>
+                <div class="weather-card">
+                    <h4>2月18日 · 赣州</h4>
+                    <div class="icon">⛅</div>
+                    <div class="temp">25°C / 13°C</div>
+                    <div class="desc">多云 · 东风1-3级</div>
+                </div>
+                <div class="weather-card">
+                    <h4>2月19日 · 南昌</h4>
+                    <div class="icon">🌧️</div>
+                    <div class="temp">20°C / 11°C</div>
+                    <div class="desc">小雨 · 东南风1-3级</div>
+                </div>
+                <div class="weather-card">
+                    <h4>2月20日 · 上饶</h4>
+                    <div class="icon">🌧️</div>
+                    <div class="temp">23°C / 13°C</div>
+                    <div class="desc">小雨 · 东北风1-3级</div>
+                </div>
+                <div class="weather-card">
+                    <h4>2月21日 · 上饶</h4>
+                    <div class="icon">🌧️</div>
+                    <div class="temp">23°C / 8°C</div>
+                    <div class="desc">中雨 · 东风1-3级</div>
+                </div>
+            </div>
+            
+            <!-- Tips -->
+            <h2 class="section-title">📝 旅行小贴士</h2>
+            <ul class="tips-list">
+                <li><strong>高速免费：</strong>春节期间（除夕至初六）高速公路免费通行，建议错峰出行。</li>
+                <li><strong>天气提醒：</strong>南昌、上饶有小到中雨，请携带雨具，注意保暖。</li>
+                <li><strong>门票预约：</strong>滕王阁、八一起义纪念馆、江西省博物馆需提前在官方平台预约。</li>
+                <li><strong>地铁出行：</strong>南昌地铁运营时间06:30-22:00，1号线可串联主要景点。</li>
+                <li><strong>烟花表演：</strong>葛仙村春节期间每晚有烟花表演，建议提前占位观看。</li>
+                <li><strong>手机应用：</strong>建议下载高德地图，本攻略中的链接点击后可直接在高德地图中打开。</li>
+            </ul>
+            
+            <!-- Map Link -->
+            <h2 class="section-title">🗺️ 旅游路线地图</h2>
+            
+            <!-- Custom Map -->
+            <div class="custom-map">
+                <div class="map-container">
+                    <svg class="map-svg" viewBox="0 0 400 320">
+                        <!-- 背景装饰 -->
+                        <defs>
+                            <linearGradient id="landGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#c8e6c9"/>
+                                <stop offset="100%" style="stop-color:#a5d6a7"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- 简化的江西省轮廓 -->
+                        <path d="M 180 40 Q 250 50 280 80 Q 310 120 300 180 Q 280 240 240 280 Q 180 300 140 260 Q 100 220 110 160 Q 120 100 150 60 Q 165 45 180 40" 
+                              fill="url(#landGrad)" stroke="#81c784" stroke-width="2" opacity="0.7"/>
+                        
+                        <!-- 路线 -->
+                        <!-- Day1: 广州→赣州 (自驾) -->
+                        <path d="M 80 290 Q 100 250 140 220" class="route-line route-drive"/>
+                        <!-- Day2: 赣州→南昌 (自驾) -->
+                        <path d="M 160 200 Q 200 150 220 100" class="route-line route-drive"/>
+                        <!-- Day3: 南昌市内 (地铁) -->
+                        <path d="M 220 100 Q 250 90 260 80" class="route-line route-metro"/>
+                        <!-- Day4: 南昌→葛仙村 (自驾) -->
+                        <path d="M 260 80 Q 300 100 330 130" class="route-line route-drive"/>
+                        <!-- Day5: 葛仙村→广州 (自驾) -->
+                        <path d="M 330 150 Q 250 250 80 290" class="route-line route-drive" stroke-dasharray="5 8"/>
+                        
+                        <!-- 城市标记 - 广州 -->
+                        <g class="city-marker" transform="translate(60, 290)">
+                            <circle r="12" fill="#FF6B6B" class="marker-dot"/>
+                            <text y="-18" class="city-label">广州</text>
+                            <text y="4" fill="white" font-size="8" text-anchor="middle">起</text>
+                        </g>
+                        
+                        <!-- 城市标记 - 赣州 -->
+                        <g class="city-marker" transform="translate(150, 210)">
+                            <circle r="10" fill="#4ECDC4" class="marker-dot"/>
+                            <text y="-15" class="city-label">赣州</text>
+                            <text y="3" fill="white" font-size="7" text-anchor="middle">D1</text>
+                        </g>
+                        
+                        <!-- 赣州景点 -->
+                        <g transform="translate(130, 230)">
+                            <circle r="4" fill="#FF9500"/>
+                            <text x="8" y="3" class="spot-marker">福寿沟</text>
+                        </g>
+                        <g transform="translate(170, 225)">
+                            <circle r="4" fill="#FF9500"/>
+                            <text x="8" y="3" class="spot-marker">郁孤台</text>
+                        </g>
+                        
+                        <!-- 城市标记 - 南昌 -->
+                        <g class="city-marker" transform="translate(230, 90)">
+                            <circle r="10" fill="#45B7D1" class="marker-dot"/>
+                            <text y="-15" class="city-label">南昌</text>
+                            <text y="3" fill="white" font-size="7" text-anchor="middle">D2-3</text>
+                        </g>
+                        
+                        <!-- 南昌景点 -->
+                        <g transform="translate(200, 75)">
+                            <circle r="4" fill="#007AFF"/>
+                            <text x="8" y="3" class="spot-marker">滕王阁</text>
+                        </g>
+                        <g transform="translate(260, 70)">
+                            <circle r="4" fill="#007AFF"/>
+                            <text x="8" y="3" class="spot-marker">八一馆</text>
+                        </g>
+                        
+                        <!-- 城市标记 - 葛仙村 -->
+                        <g class="city-marker" transform="translate(340, 140)">
+                            <circle r="10" fill="#96CEB4" class="marker-dot"/>
+                            <text y="-15" class="city-label">葛仙村</text>
+                            <text y="3" fill="white" font-size="7" text-anchor="middle">D4-5</text>
+                        </g>
+                        
+                        <!-- 方向箭头 -->
+                        <text x="90" y="260" font-size="14">→</text>
+                        <text x="185" y="150" font-size="14">↗</text>
+                        <text x="290" y="105" font-size="14">→</text>
+                        <text x="200" y="280" font-size="12" fill="#666">返程</text>
+                    </svg>
+                </div>
+                
+                <!-- 图例 -->
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <span class="legend-line legend-drive"></span>
+                        <span>自驾</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-line legend-taxi"></span>
+                        <span>打车</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-line legend-metro"></span>
+                        <span>地铁</span>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="amapuri://workInAmap/createWithToken?polymericId=mcp_efe3c83c54ae4ddfbd865e1942d65cdb&from=MCP" class="map-link">
+                📍 在高德地图中打开详细路线
+            </a>
+            
+            <!-- Day 1 -->
+            <div class="day-section">
+                <div class="day-header">
+                    <h3>Day 1: 赣州古城探秘 (2月17日)</h3>
+                    <p>第一天以赣州古城游为主，探索宋代文化遗迹，夜游宋潮不夜城。</p>
+                </div>
+                
+                <div class="spot-card">
+                    <img src="https://aos-comment.amap.com/B0FFLNR6DA/comment/content_media_external_file_100004455_1765618136394_63170197.jpg" alt="福寿沟博物馆">
+                    <div class="info">
+                        <h4>福寿沟博物馆</h4>
+                        <p>探索宋代城市排水系统的智慧结晶，了解古人精妙的城市水利工程设计。</p>
+                        <span class="time">建议游览时间：1.5小时</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <img src="https://aos-comment.amap.com/B0FFM5BHY7/comment/content_media_external_file_100000054_1766215250429_63557081.jpg" alt="魏家大院">
+                    <div class="info">
+                        <h4>魏家大院</h4>
+                        <p>赣南客家文化博物馆，感受客家建筑之美与民俗风情，就在福寿沟旁边。</p>
+                        <span class="time">建议游览时间：1小时</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <img src="https://aos-comment.amap.com/B031D006QF/comment/content_media_external_file_100005540_1770303130163_14990975.jpg" alt="郁孤台公园">
+                    <div class="info">
+                        <h4>郁孤台公园</h4>
+                        <p>"郁孤台下清江水，中间多少行人泪" —— 辛弃疾词中的千年名胜。</p>
+                        <span class="time">建议游览时间：1.5小时</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <img src="https://store.is.autonavi.com/showpic/d9360a4d32b521b4507c77a16555591e" alt="宋潮不夜城">
+                    <div class="info">
+                        <h4>宋潮不夜城</h4>
+                        <p>夜游宋城，体验千年前的繁华夜市与宋代市井文化，24小时营业。</p>
+                        <span class="time">建议游览时间：2小时（夜游）</span>
+                    </div>
+                </div>
+                
+                <div class="transport-box">
+                    <h4>🚕 景点间交通</h4>
+                    <p>赣州市区景点集中，福寿沟到郁孤台约2.3公里，打车约8-12元，10分钟可达。</p>
+                    <div class="btn-group">
+                        <a href="https://uri.amap.com/marker?position=114.951942,25.855134&name=福寿沟博物馆" class="btn btn-navi">导航去福寿沟</a>
+                        <a href="amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=25.855134&slon=114.951942&sname=%E7%A6%8F%E5%AF%BF%E6%B2%9F%E5%8D%9A%E7%89%A9%E9%A6%86&dlon=114.938682&dlat=25.864921&dname=%E9%83%81%E5%AD%A4%E5%8F%B0%E5%85%AC%E5%9B%AD" class="btn btn-taxi">打车去郁孤台</a>
+                        <a href="https://uri.amap.com/marker?position=114.93987,25.86456&name=宋潮不夜城" class="btn btn-navi">导航去不夜城</a>
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <h4>🏨 当晚住宿</h4>
+                    <p>万隆国际公寓(章贡区万象城店)</p>
+                </div>
+            </div>
+            
+            <!-- Day 2 -->
+            <div class="day-section">
+                <div class="day-header">
+                    <h3>Day 2: 赣州 → 南昌 (2月18日)</h3>
+                    <p>上午在赣州自由活动，午饭后自驾前往南昌，车程约4小时。</p>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item"><strong>上午</strong> — 赣州自由活动，享用早餐</div>
+                    <div class="timeline-item"><strong>中午</strong> — 午饭后出发</div>
+                    <div class="timeline-item"><strong>下午</strong> — 自驾前往南昌（约4小时·380公里）</div>
+                    <div class="timeline-item"><strong>晚上</strong> — 抵达南昌，入住酒店休息</div>
+                </div>
+                
+                <div class="transport-box drive">
+                    <h4>🚗 自驾前往南昌</h4>
+                    <p>赣州 → 南昌，全程高速约380公里，春节期间高速免费。</p>
+                    <div class="btn-group">
+                        <a href="amapuri://navi?sourceApplication=amap_mcp&lon=115.881197&lat=28.681332&dev=1&style=2" class="btn btn-drive">导航去南昌</a>
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <h4>🏨 当晚住宿</h4>
+                    <p>颐朵酒店(江西师范大学太子殿地铁站店)</p>
+                </div>
+            </div>
+            
+            <!-- Day 3 -->
+            <div class="day-section">
+                <div class="day-header">
+                    <h3>Day 3: 南昌经典游 (2月19日)</h3>
+                    <p>游览南昌三大经典景点，地铁1号线串联全程，方便快捷。</p>
+                </div>
+                
+                <div class="spot-card">
+                    <img src="http://store.is.autonavi.com/showpic/38e62fd572d642c9eedf5dd117109f36" alt="滕王阁">
+                    <div class="info">
+                        <h4>滕王阁</h4>
+                        <p>"落霞与孤鹜齐飞，秋水共长天一色" —— 千古名篇《滕王阁序》诞生地，江南三大名楼之一。</p>
+                        <span class="time">建议游览时间：2小时 · 地铁1号线滕王阁站</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <img src="http://store.is.autonavi.com/showpic/43fafd9ef178c7aa891a0712879289a2" alt="八一起义纪念馆">
+                    <div class="info">
+                        <h4>南昌八一起义纪念馆</h4>
+                        <p>中国人民解放军诞生地，缅怀革命先烈，传承红色基因。免费参观需提前预约。</p>
+                        <span class="time">建议游览时间：1.5小时 · 地铁1/3号线八一馆站</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <img src="https://aos-comment.amap.com/B0FFGY018L/headerImg/67f8c6ae1351e9be83f3b9c55a2044ac_2048_2048_80.jpg" alt="江西省博物馆">
+                    <div class="info">
+                        <h4>江西省博物馆</h4>
+                        <p>海昏侯墓出土文物展，探索西汉王侯的奢华与辉煌。免费参观需提前预约。</p>
+                        <span class="time">建议游览时间：2.5小时 · 地铁1号线珠江路站</span>
+                    </div>
+                </div>
+                
+                <div class="transport-box metro">
+                    <h4>🚇 景点间交通（地铁出行）</h4>
+                    <p><strong>滕王阁 → 八一馆：</strong>地铁1号线，2站约9分钟（滕王阁站 → 万寿宫 → 八一馆站5号口出）</p>
+                    <p style="margin-top:10px;"><strong>八一馆 → 省博物馆：</strong>地铁1号线，8站约24分钟（八一馆站5号口进 → 珠江路站2号口出，步行900米）</p>
+                    <div class="btn-group">
+                        <a href="https://uri.amap.com/marker?position=115.881197,28.681332&name=滕王阁" class="btn btn-navi">导航去滕王阁</a>
+                        <a href="https://uri.amap.com/marker?position=115.890134,28.675419&name=八一起义纪念馆" class="btn btn-metro">导航去八一馆</a>
+                        <a href="https://uri.amap.com/marker?position=115.881823,28.705900&name=江西省博物馆" class="btn btn-metro">导航去省博物馆</a>
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <h4>🏨 当晚住宿</h4>
+                    <p>颐朵酒店(江西师范大学太子殿地铁站店)</p>
+                </div>
+            </div>
+            
+            <!-- Day 4 -->
+            <div class="day-section">
+                <div class="day-header">
+                    <h3>Day 4: 南昌 → 葛仙村 (2月20日)</h3>
+                    <p>上午休息，午饭后自驾前往葛仙村度假区，车程约2小时。</p>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item"><strong>上午</strong> — 睡懒觉，享用早餐</div>
+                    <div class="timeline-item"><strong>中午</strong> — 午饭后出发</div>
+                    <div class="timeline-item"><strong>下午</strong> — 自驾前往葛仙村（约2小时·150公里）</div>
+                    <div class="timeline-item"><strong>傍晚</strong> — 入住民宿，休息调整</div>
+                </div>
+                
+                <div class="transport-box drive">
+                    <h4>🚗 自驾前往亲情民宿</h4>
+                    <p>南昌 → 葛仙山亲情民宿，全程高速约150公里，春节期间高速免费。</p>
+                    <div class="btn-group">
+                        <a href="amapuri://navi?sourceApplication=amap_mcp&lon=117.691891&lat=28.138122&dev=1&style=2" class="btn btn-drive">导航去亲情民宿</a>
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <h4>🏨 当晚住宿</h4>
+                    <p>葛仙山亲情民宿(葛仙村店) · 评分4.8</p>
+                </div>
+            </div>
+            
+            <!-- Day 5 -->
+            <div class="day-section">
+                <div class="day-header">
+                    <h3>Day 5: 葛仙村仙境游 (2月21日)</h3>
+                    <p>白天游览葛仙村，拍照打卡，晚上观看烟花表演后返程。</p>
+                </div>
+                
+                <div class="transport-box drive">
+                    <h4>🚗 前往葛仙村度假区</h4>
+                    <p>从民宿出发前往景区停车场，车程约5分钟。</p>
+                    <div class="btn-group">
+                        <a href="amapuri://navi?sourceApplication=amap_mcp&lon=117.693149&lat=28.096403&dev=1&style=2" class="btn btn-drive">导航去景区停车场</a>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <img src="http://store.is.autonavi.com/showpic/d91ab2b1facbfdb94d01b6a61af23b6c" alt="葛仙村度假区">
+                    <div class="info">
+                        <h4>葛仙村度假区</h4>
+                        <p>仙气飘飘的网红打卡地，AAAA级景区。白天拍照游玩，晚上观看绚烂烟花表演。</p>
+                        <span class="time">建议游览时间：全天</span>
+                    </div>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item"><strong>早上</strong> — 从民宿出发，导航到景区停车场</div>
+                    <div class="timeline-item"><strong>白天</strong> — 葛仙村拍照打卡，游览仙境</div>
+                    <div class="timeline-item"><strong>傍晚</strong> — 观看烟花表演（提前占位）</div>
+                    <div class="timeline-item"><strong>晚上</strong> — 烟花结束后上高速返程回广州（约6小时）</div>
+                </div>
+                
+                <div class="transport-box drive">
+                    <h4>🚗 返程回广州</h4>
+                    <p>葛仙村 → 广州，全程高速约600公里，夜间行车注意安全，可在服务区休息。</p>
+                    <div class="btn-group">
+                        <a href="amapuri://navi?sourceApplication=amap_mcp&lon=113.264385&lat=23.129112&dev=1&style=2" class="btn btn-drive">导航去广州</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2026 春节江西旅游攻略 | 制作时间: 2026年2月</p>
+            <p style="margin-top:5px;">数据来源：高德地图MCP</p>
+        </div>
+    </div>
+</body>
+</html>
