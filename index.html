@@ -67,10 +67,9 @@
         /* Weather Cards */
         .weather-grid {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
         }
         
         .weather-card {
@@ -78,9 +77,40 @@
             border-radius: 10px;
             padding: 12px 10px;
             text-align: center;
-            flex: 1;
+            flex: 1 1 calc(20% - 10px);
             min-width: 120px;
             white-space: nowrap;
+        }
+        
+        /* 手机端天气卡片2行显示 */
+        @media (max-width: 600px) {
+            .weather-card {
+                flex: 1 1 calc(33% - 10px);
+                min-width: 100px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .weather-card {
+                flex: 1 1 calc(50% - 5px);
+                min-width: 80px;
+                padding: 10px 8px;
+            }
+            .weather-card h4 {
+                font-size: 0.7rem;
+            }
+            .weather-card .date {
+                font-size: 0.6rem;
+            }
+            .weather-card .icon {
+                font-size: 1.3rem;
+            }
+            .weather-card .temp {
+                font-size: 0.8rem;
+            }
+            .weather-card .desc {
+                font-size: 0.65rem;
+            }
         }
         
         .weather-card h4 {
@@ -657,7 +687,7 @@
                 </div>
             </div>
             
-            <a href="amapuri://workInAmap/createWithToken?polymericId=mcp_efe3c83c54ae4ddfbd865e1942d65cdb&from=MCP" class="map-link">
+            <a href="amapuri://workInAmap/createWithToken?polymericId=mcp_ac8c8d3beaa14216bc6a988c8da88d87&from=MCP" class="map-link">
                 📍 在高德地图中打开详细路线
             </a>
             
