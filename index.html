@@ -1117,7 +1117,15 @@
                     e.preventDefault();
                     var href = a.getAttribute('href');
                     if (openAmapMarker(href)) {
-                        setTimeout(function () { window.location.href = href; }, 1800);
+                        var tid = setTimeout(function () {
+                            if (document.visibilityState === 'visible') window.location.href = href;
+                        }, 1800);
+                        document.addEventListener('visibilitychange', function cb() {
+                            if (document.visibilityState === 'hidden') {
+                                clearTimeout(tid);
+                                document.removeEventListener('visibilitychange', cb);
+                            }
+                        });
                     } else {
                         window.location.href = href;
                     }
