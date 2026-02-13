@@ -193,7 +193,22 @@
             height: 320px;
             border-radius: 12px;
             overflow: hidden;
-            background: linear-gradient(160deg, #b8d4e3 0%, #8fc4d8 40%, #7eb8d0 100%);
+            background: #c5d8e0;
+        }
+        
+        .static-map-bg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .static-map-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         
         .map-svg {
@@ -572,78 +587,74 @@
             <!-- Custom Map -->
             <div class="custom-map">
                 <div class="map-container">
+                    <!-- 高德静态地图底图（GCJ-02），与 SVG 点位一致 -->
+                    <div class="static-map-bg">
+                        <img id="static-map-img" src="" alt="路线区域地图" referrerpolicy="no-referrer"/>
+                    </div>
                     <svg class="map-svg" viewBox="0 0 400 320">
                         <defs>
                             <filter id="routeShadow" x="-20%" y="-20%" width="140%" height="140%">
                                 <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="rgba(0,0,0,0.3)"/>
                             </filter>
-                            <linearGradient id="landBg" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="rgba(200,230,220,0.35)"/>
-                                <stop offset="100%" stop-color="rgba(180,215,200,0.4)"/>
-                            </linearGradient>
                         </defs>
-                        <!-- 简略区域底（与点位同一套经纬度映射，仅作示意） -->
-                        <path d="M 50 310 L 110 295 L 200 185 L 250 70 L 350 95 L 360 120 L 340 300 L 100 318 Z" fill="url(#landBg)" stroke="rgba(120,160,140,0.4)" stroke-width="1.5"/>
+                        <!-- 路线占位，由 JS 根据 GCJ-02 坐标重绘 -->
+                        <path id="route-day1" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
+                        <path id="route-day2" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
+                        <path id="route-day4" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
+                        <path id="route-day5" stroke="#666" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="8 6" opacity="0.6"/>
                         
-                        <!-- 路线与点位按经纬度统一换算：lon112-118→x, lat23-30→y -->
-                        <!-- 广州113.26,23.13 赣州114.95,25.86 南昌115.88,28.68 葛仙村117.69,28.09 -->
-                        <path d="M 107 295 C 140 255 170 220 197 185" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
-                        <path d="M 197 185 C 215 145 232 105 247 73" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
-                        <path d="M 247 73 C 278 80 308 88 343 96" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
-                        <path d="M 343 96 C 250 175 175 250 107 295" stroke="#666" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="8 6" opacity="0.6"/>
-                        
-                        <!-- 广州 -->
-                        <g class="city-marker" transform="translate(107, 295)">
+                        <!-- 广州（data-map-id 供 JS 用 GCJ-02 更新位置） -->
+                        <g class="city-marker" data-map-id="guangzhou" transform="translate(107, 295)">
                             <circle r="14" fill="#E53935" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
                             <text y="-20" class="city-label" style="fill:#E53935;font-weight:bold;text-shadow:0 0 2px #fff, 1px 1px 2px #333;">广州</text>
                             <text y="5" fill="white" font-size="9" text-anchor="middle" font-weight="bold">起</text>
                         </g>
                         
                         <!-- 赣州 -->
-                        <g class="city-marker" transform="translate(197, 185)">
+                        <g class="city-marker" data-map-id="ganzhou" transform="translate(197, 185)">
                             <circle r="14" fill="#E53935" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
                             <text y="-20" class="city-label" style="fill:#E53935;font-weight:bold;text-shadow:0 0 2px #fff, 1px 1px 2px #333;">赣州</text>
                             <text y="5" fill="white" font-size="9" text-anchor="middle" font-weight="bold">D1</text>
                         </g>
-                        <g transform="translate(188, 195)">
+                        <g data-map-id="fushougou" transform="translate(188, 195)">
                             <circle r="4" fill="#FF9500" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="-35" y="4" font-size="9" fill="#FF9500" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">福寿沟</text>
                         </g>
-                        <g transform="translate(208, 178)">
+                        <g data-map-id="yugutai" transform="translate(208, 178)">
                             <circle r="4" fill="#FF9500" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#FF9500" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">郁孤台</text>
                         </g>
                         
                         <!-- 南昌 -->
-                        <g class="city-marker" transform="translate(247, 73)">
+                        <g class="city-marker" data-map-id="nanchang" transform="translate(247, 73)">
                             <circle r="14" fill="#E53935" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
                             <text y="-20" class="city-label" style="fill:#E53935;font-weight:bold;text-shadow:0 0 2px #fff, 1px 1px 2px #333;">南昌</text>
                             <text y="5" fill="white" font-size="9" text-anchor="middle" font-weight="bold">D2-3</text>
                         </g>
-                        <g transform="translate(232, 65)">
+                        <g data-map-id="tengwangge" transform="translate(232, 65)">
                             <circle r="4" fill="#007AFF" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="-38" y="4" font-size="9" fill="#007AFF" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">滕王阁</text>
                         </g>
-                        <g transform="translate(262, 78)">
+                        <g data-map-id="bayi" transform="translate(262, 78)">
                             <circle r="4" fill="#007AFF" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#007AFF" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">八一馆</text>
                         </g>
-                        <g transform="translate(247, 90)">
+                        <g data-map-id="museum" transform="translate(247, 90)">
                             <circle r="4" fill="#007AFF" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#007AFF" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">省博物馆</text>
                         </g>
                         
                         <!-- 葛仙村 -->
-                        <g class="city-marker" transform="translate(343, 96)">
+                        <g class="city-marker" data-map-id="gexiancun" transform="translate(343, 96)">
                             <circle r="14" fill="#E53935" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
                             <text y="-20" class="city-label" style="fill:#E53935;font-weight:bold;text-shadow:0 0 2px #fff, 1px 1px 2px #333;">葛仙村</text>
                             <text y="5" fill="white" font-size="9" text-anchor="middle" font-weight="bold">D4-5</text>
                         </g>
-                        <g transform="translate(358, 88)">
+                        <g data-map-id="dujiaqu" transform="translate(358, 88)">
                             <circle r="4" fill="#2ECC71" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#2ECC71" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">度假区</text>
                         </g>
-                        <g transform="translate(358, 106)">
+                        <g data-map-id="yanhua" transform="translate(358, 106)">
                             <circle r="4" fill="#2ECC71" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#2ECC71" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">烟花广场</text>
                         </g>
@@ -981,6 +992,140 @@
         }
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadWeather);
         else loadWeather();
+    })();
+
+    // ============= 强制坐标转换层（WGS-84 → GCJ-02）=============
+    (function () {
+        var a = 6378245.0;
+        var ee = 0.00669342162296594323;
+
+        function wgs84ToGcj02(lng, lat) {
+            if (lng < 72.004 || lng > 137.8347 || lat < 0.8293 || lat > 55.8271) return [lng, lat];
+            var dLat = _transformLat(lng - 105.0, lat - 35.0);
+            var dLon = _transformLng(lng - 105.0, lat - 35.0);
+            var radLat = lat / 180.0 * Math.PI;
+            var magic = Math.sin(radLat);
+            magic = 1 - ee * magic * magic;
+            var sqrtMagic = Math.sqrt(magic);
+            dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Math.PI);
+            dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Math.PI);
+            return [lng + dLon, lat + dLat];
+        }
+        function _transformLat(x, y) {
+            var ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+            ret += (20.0 * Math.sin(6.0 * x * Math.PI) + 20.0 * Math.sin(2.0 * x * Math.PI)) * 2.0 / 3.0;
+            ret += (20.0 * Math.sin(y * Math.PI) + 40.0 * Math.sin(y / 3.0 * Math.PI)) * 2.0 / 3.0;
+            ret += (160.0 * Math.sin(y / 12.0 * Math.PI) + 320 * Math.sin(y * Math.PI / 30.0)) * 2.0 / 3.0;
+            return ret;
+        }
+        function _transformLng(x, y) {
+            var ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+            ret += (20.0 * Math.sin(6.0 * x * Math.PI) + 20.0 * Math.sin(2.0 * x * Math.PI)) * 2.0 / 3.0;
+            ret += (20.0 * Math.sin(x * Math.PI) + 40.0 * Math.sin(x / 3.0 * Math.PI)) * 2.0 / 3.0;
+            ret += (150.0 * Math.sin(x / 12.0 * Math.PI) + 300.0 * Math.sin(x * Math.PI / 30.0)) * 2.0 / 3.0;
+            return ret;
+        }
+
+        var OFFSET_X = 0;
+        var OFFSET_Y = 0;
+
+        function lonLatToSvg(lng, lat) {
+            var x = (lng - 112) / 6 * 320 + 40;
+            var y = (30 - lat) / 7 * 280 + 20;
+            return { x: x + OFFSET_X, y: y + OFFSET_Y };
+        }
+
+        var rawPoints = [
+            { id: 'guangzhou', lng: 113.264385, lat: 23.129112 },
+            { id: 'ganzhou', lng: 114.935, lat: 25.831 },
+            { id: 'fushougou', lng: 114.951942, lat: 25.855134 },
+            { id: 'yugutai', lng: 114.938682, lat: 25.864921 },
+            { id: 'nanchang', lng: 115.857, lat: 28.682 },
+            { id: 'tengwangge', lng: 115.879, lat: 28.684 },
+            { id: 'bayi', lng: 115.890134, lat: 28.675419 },
+            { id: 'museum', lng: 115.881823, lat: 28.705900 },
+            { id: 'gexiancun', lng: 117.621, lat: 28.124 },
+            { id: 'dujiaqu', lng: 117.63, lat: 28.12 },
+            { id: 'yanhua', lng: 117.63, lat: 28.13 }
+        ];
+
+        var gcj02Points = rawPoints.map(function (p) {
+            var gcj = wgs84ToGcj02(p.lng, p.lat);
+            var svg = lonLatToSvg(gcj[0], gcj[1]);
+            return { id: p.id, lng: gcj[0], lat: gcj[1], x: svg.x, y: svg.y };
+        });
+
+        function applyMapPoints() {
+            gcj02Points.forEach(function (p) {
+                var el = document.querySelector('.map-svg [data-map-id="' + p.id + '"]');
+                if (el) el.setAttribute('transform', 'translate(' + p.x + ',' + p.y + ')');
+            });
+            var byId = {};
+            gcj02Points.forEach(function (p) { byId[p.id] = p; });
+            var gz = byId.guangzhou, gz2 = byId.ganzhou, nc = byId.nanchang, gxc = byId.gexiancun;
+            if (!gz || !gz2 || !nc || !gxc) return;
+            var M = function (p) { return 'M ' + p.x + ' ' + p.y; };
+            var C = function (c1, c2, end) { return ' C ' + c1.x + ' ' + c1.y + ' ' + c2.x + ' ' + c2.y + ' ' + end.x + ' ' + end.y; };
+            var ctrl = function (a, b, t1, t2) {
+                return { c1: { x: a.x + (b.x - a.x) * t1, y: a.y + (b.y - a.y) * t1 }, c2: { x: a.x + (b.x - a.x) * t2, y: a.y + (b.y - a.y) * t2 } };
+            };
+            document.getElementById('route-day1').setAttribute('d', M(gz) + C(ctrl(gz, gz2, 0.35, 0.65).c1, ctrl(gz, gz2, 0.35, 0.65).c2, gz2));
+            document.getElementById('route-day2').setAttribute('d', M(gz2) + C(ctrl(gz2, nc, 0.35, 0.65).c1, ctrl(gz2, nc, 0.35, 0.65).c2, nc));
+            document.getElementById('route-day4').setAttribute('d', M(nc) + C(ctrl(nc, gxc, 0.35, 0.65).c1, ctrl(nc, gxc, 0.35, 0.65).c2, gxc));
+            document.getElementById('route-day5').setAttribute('d', M(gxc) + C(ctrl(gxc, gz, 0.35, 0.65).c1, ctrl(gxc, gz, 0.35, 0.65).c2, gz));
+        }
+
+        var AMAP_KEY_STATIC = '35b357c5859bf23df258ffd670da331c';
+        var staticMapUrl = 'https://restapi.amap.com/v3/staticmap?key=' + AMAP_KEY_STATIC + '&location=115.5,25.6&zoom=7&size=400*320&scale=2';
+        function initMap() {
+            var img = document.getElementById('static-map-img');
+            if (img) img.src = staticMapUrl;
+            applyMapPoints();
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initMap);
+        else initMap();
+    })();
+
+    // 点击定位链接时优先调起高德 APP，失败则打开网页版
+    (function () {
+        function isIOS() { return /iPhone|iPad|iPod/i.test(navigator.userAgent); }
+        function isAndroid() { return /Android/i.test(navigator.userAgent); }
+        function openAmapMarker(href) {
+            try {
+                var u = new URL(href);
+                var pos = u.searchParams.get('position');
+                var name = u.searchParams.get('name') || '';
+                if (!pos) return false;
+                var parts = pos.split(',');
+                var lng = parts[0], lat = parts[1];
+                var scheme;
+                if (isAndroid()) {
+                    scheme = 'androidamap://viewMap?lon=' + lng + '&lat=' + lat + '&poiname=' + encodeURIComponent(name) + '&dev=0';
+                } else if (isIOS()) {
+                    scheme = 'iosamap://viewMap?lon=' + lng + '&lat=' + lat + '&poiname=' + encodeURIComponent(name) + '&dev=0';
+                } else {
+                    return false;
+                }
+                window.location.href = scheme;
+                return true;
+            } catch (e) { return false; }
+        }
+        function initAmapLinks() {
+            document.querySelectorAll('a[href*="uri.amap.com/marker"]').forEach(function (a) {
+                a.addEventListener('click', function (e) {
+                    if (!isIOS() && !isAndroid()) return;
+                    e.preventDefault();
+                    var href = a.getAttribute('href');
+                    if (openAmapMarker(href)) {
+                        setTimeout(function () { window.location.href = href; }, 1800);
+                    } else {
+                        window.location.href = href;
+                    }
+                });
+            });
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAmapLinks);
+        else initAmapLinks();
     })();
     </script>
 </body>
