@@ -82,36 +82,30 @@
             white-space: nowrap;
         }
         
-        /* 手机端天气卡片2行显示 */
+        /* 手机端天气卡片2行、统一大小 */
         @media (max-width: 600px) {
-            .weather-card {
-                flex: 1 1 calc(33% - 10px);
-                min-width: 100px;
+            .weather-grid {
+                gap: 8px;
             }
+            .weather-card {
+                flex: 0 0 calc((100% - 16px) / 3);
+                min-width: 0;
+                padding: 10px 8px;
+                box-sizing: border-box;
+            }
+            .weather-card h4 { font-size: 0.7rem; }
+            .weather-card .date { font-size: 0.6rem; }
+            .weather-card .icon { font-size: 1.3rem; }
+            .weather-card .temp { font-size: 0.8rem; }
+            .weather-card .desc { font-size: 0.65rem; }
         }
         
         @media (max-width: 400px) {
             .weather-card {
-                flex: 1 1 calc(50% - 5px);
-                min-width: 80px;
-                padding: 10px 8px;
-            }
-            .weather-card h4 {
-                font-size: 0.7rem;
-            }
-            .weather-card .date {
-                font-size: 0.6rem;
-            }
-            .weather-card .icon {
-                font-size: 1.3rem;
-            }
-            .weather-card .temp {
-                font-size: 0.8rem;
-            }
-            .weather-card .desc {
-                font-size: 0.65rem;
+                flex: 0 0 calc((100% - 8px) / 2);
             }
         }
+        
         
         .weather-card h4 {
             font-size: 0.75rem;
@@ -199,9 +193,7 @@
             height: 320px;
             border-radius: 12px;
             overflow: hidden;
-            background-image: url('https://restapi.amap.com/v3/staticmap?location=115.5,26.5&zoom=6&size=750*400&scale=2&traffic=0&key=35b357c5859bf23df258ffd670da331c');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(160deg, #b8d4e3 0%, #8fc4d8 40%, #7eb8d0 100%);
         }
         
         .map-svg {
@@ -535,42 +527,42 @@
         
         <div class="content">
             <!-- Weather -->
-            <h2 class="section-title">🌤️ 春节期间天气预报</h2>
+            <h2 class="section-title">🌤️ 春节期间天气预报 <small style="font-size:0.7rem;color:#999;">当日预报·0点更新</small></h2>
             <div class="weather-grid">
-                <div class="weather-card">
+                <div class="weather-card" data-city="360700" data-date="D1 · 广州→赣州" data-day="大年初一（2月17日）">
                     <h4>D1 · 广州→赣州</h4>
                     <div class="date">大年初一（2月17日）</div>
                     <div class="icon">☁️</div>
-                    <div class="temp">17°C / 9°C</div>
-                    <div class="desc">阴 · 东风1-3级</div>
+                    <div class="temp">--°C / --°C</div>
+                    <div class="desc">加载中...</div>
                 </div>
-                <div class="weather-card">
+                <div class="weather-card" data-city="360100" data-date="D2 · 赣州→南昌" data-day="大年初二（2月18日）">
                     <h4>D2 · 赣州→南昌</h4>
                     <div class="date">大年初二（2月18日）</div>
                     <div class="icon">⛅</div>
-                    <div class="temp">25°C / 13°C</div>
-                    <div class="desc">多云 · 东风1-3级</div>
+                    <div class="temp">--°C / --°C</div>
+                    <div class="desc">加载中...</div>
                 </div>
-                <div class="weather-card">
+                <div class="weather-card" data-city="360100" data-date="D3 · 南昌游玩" data-day="大年初三（2月19日）">
                     <h4>D3 · 南昌游玩</h4>
                     <div class="date">大年初三（2月19日）</div>
                     <div class="icon">🌧️</div>
-                    <div class="temp">20°C / 11°C</div>
-                    <div class="desc">小雨 · 东南风1-3级</div>
+                    <div class="temp">--°C / --°C</div>
+                    <div class="desc">加载中...</div>
                 </div>
-                <div class="weather-card">
+                <div class="weather-card" data-city="361100" data-date="D4 · 南昌→葛仙村" data-day="大年初四（2月20日）">
                     <h4>D4 · 南昌→葛仙村</h4>
                     <div class="date">大年初四（2月20日）</div>
                     <div class="icon">🌧️</div>
-                    <div class="temp">23°C / 13°C</div>
-                    <div class="desc">小雨 · 东北风1-3级</div>
+                    <div class="temp">--°C / --°C</div>
+                    <div class="desc">加载中...</div>
                 </div>
-                <div class="weather-card">
+                <div class="weather-card" data-city="440100" data-date="D5 · 葛仙村→广州" data-day="大年初五（2月21日）">
                     <h4>D5 · 葛仙村→广州</h4>
                     <div class="date">大年初五（2月21日）</div>
                     <div class="icon">🌧️</div>
-                    <div class="temp">23°C / 8°C</div>
-                    <div class="desc">中雨 · 东风1-3级</div>
+                    <div class="temp">--°C / --°C</div>
+                    <div class="desc">加载中...</div>
                 </div>
             </div>
             
@@ -582,88 +574,90 @@
                 <div class="map-container">
                     <svg class="map-svg" viewBox="0 0 400 320">
                         <defs>
-                            <!-- 路线渐变和阴影 -->
                             <filter id="routeShadow" x="-20%" y="-20%" width="140%" height="140%">
                                 <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="rgba(0,0,0,0.3)"/>
                             </filter>
+                            <linearGradient id="landBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="rgba(200,230,220,0.35)"/>
+                                <stop offset="100%" stop-color="rgba(180,215,200,0.4)"/>
+                            </linearGradient>
                         </defs>
+                        <!-- 简略区域底（与点位同一套经纬度映射，仅作示意） -->
+                        <path d="M 50 310 L 110 295 L 200 185 L 250 70 L 350 95 L 360 120 L 340 300 L 100 318 Z" fill="url(#landBg)" stroke="rgba(120,160,140,0.4)" stroke-width="1.5"/>
                         
-                        <!-- 自驾路线 -->
-                        <!-- Day1: 广州→赣州 -->
-                        <path d="M 95 275 C 110 250 130 230 155 200" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
-                        <!-- Day2: 赣州→南昌 -->
-                        <path d="M 160 195 C 175 150 195 110 215 70" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
-                        <!-- Day4: 南昌→葛仙村 -->
-                        <path d="M 220 68 C 250 75 280 85 305 95" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
-                        <!-- Day5: 葛仙村→广州 (返程虚线) -->
-                        <path d="M 310 100 C 260 170 170 230 95 275" stroke="#666" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="8 6" opacity="0.6"/>
+                        <!-- 路线与点位按经纬度统一换算：lon112-118→x, lat23-30→y -->
+                        <!-- 广州113.26,23.13 赣州114.95,25.86 南昌115.88,28.68 葛仙村117.69,28.09 -->
+                        <path d="M 107 295 C 140 255 170 220 197 185" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
+                        <path d="M 197 185 C 215 145 232 105 247 73" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
+                        <path d="M 247 73 C 278 80 308 88 343 96" stroke="#34C759" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#routeShadow)" opacity="0.9"/>
+                        <path d="M 343 96 C 250 175 175 250 107 295" stroke="#666" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="8 6" opacity="0.6"/>
                         
-                        <!-- 城市标记 - 广州 -->
-                        <g class="city-marker" transform="translate(95, 275)">
-                            <circle r="16" fill="#FF6B6B" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
-                            <text y="-22" class="city-label" style="fill:#fff;font-weight:bold;text-shadow:1px 1px 3px #333;">广州</text>
-                            <text y="5" fill="white" font-size="10" text-anchor="middle" font-weight="bold">起</text>
+                        <!-- 广州 -->
+                        <g class="city-marker" transform="translate(107, 295)">
+                            <circle r="14" fill="#E53935" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
+                            <text y="-20" class="city-label" style="fill:#E53935;font-weight:bold;text-shadow:0 0 2px #fff, 1px 1px 2px #333;">广州</text>
+                            <text y="5" fill="white" font-size="9" text-anchor="middle" font-weight="bold">起</text>
                         </g>
                         
-                        <!-- 城市标记 - 赣州 + 景点 (调整位置靠近江西南部) -->
-                        <g class="city-marker" transform="translate(155, 200)">
-                            <circle r="14" fill="#4ECDC4" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
-                            <text y="-20" class="city-label" style="fill:#fff;font-weight:bold;text-shadow:1px 1px 3px #333;">赣州</text>
+                        <!-- 赣州 -->
+                        <g class="city-marker" transform="translate(197, 185)">
+                            <circle r="14" fill="#E53935" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
+                            <text y="-20" class="city-label" style="fill:#E53935;font-weight:bold;text-shadow:0 0 2px #fff, 1px 1px 2px #333;">赣州</text>
                             <text y="5" fill="white" font-size="9" text-anchor="middle" font-weight="bold">D1</text>
                         </g>
-                        <!-- 赣州景点标注 -->
-                        <g transform="translate(135, 210)">
+                        <g transform="translate(188, 195)">
                             <circle r="4" fill="#FF9500" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="-35" y="4" font-size="9" fill="#FF9500" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">福寿沟</text>
                         </g>
-                        <g transform="translate(175, 190)">
+                        <g transform="translate(208, 178)">
                             <circle r="4" fill="#FF9500" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#FF9500" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">郁孤台</text>
                         </g>
                         
-                        <!-- 城市标记 - 南昌 + 景点 -->
-                        <g class="city-marker" transform="translate(215, 65)">
-                            <circle r="14" fill="#45B7D1" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
-                            <text y="-20" class="city-label" style="fill:#fff;font-weight:bold;text-shadow:1px 1px 3px #333;">南昌</text>
+                        <!-- 南昌 -->
+                        <g class="city-marker" transform="translate(247, 73)">
+                            <circle r="14" fill="#E53935" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
+                            <text y="-20" class="city-label" style="fill:#E53935;font-weight:bold;text-shadow:0 0 2px #fff, 1px 1px 2px #333;">南昌</text>
                             <text y="5" fill="white" font-size="9" text-anchor="middle" font-weight="bold">D2-3</text>
                         </g>
-                        <!-- 南昌景点标注 -->
-                        <g transform="translate(190, 55)">
+                        <g transform="translate(232, 65)">
                             <circle r="4" fill="#007AFF" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
-                            <text x="-40" y="4" font-size="9" fill="#007AFF" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">滕王阁</text>
+                            <text x="-38" y="4" font-size="9" fill="#007AFF" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">滕王阁</text>
                         </g>
-                        <g transform="translate(240, 55)">
+                        <g transform="translate(262, 78)">
                             <circle r="4" fill="#007AFF" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#007AFF" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">八一馆</text>
                         </g>
-                        <g transform="translate(215, 85)">
+                        <g transform="translate(247, 90)">
                             <circle r="4" fill="#007AFF" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#007AFF" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">省博物馆</text>
                         </g>
                         
-                        <!-- 城市标记 - 葛仙村 + 景点 -->
-                        <g class="city-marker" transform="translate(310, 95)">
-                            <circle r="14" fill="#96CEB4" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
-                            <text y="-20" class="city-label" style="fill:#fff;font-weight:bold;text-shadow:1px 1px 3px #333;">葛仙村</text>
+                        <!-- 葛仙村 -->
+                        <g class="city-marker" transform="translate(343, 96)">
+                            <circle r="14" fill="#E53935" class="marker-dot" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))"/>
+                            <text y="-20" class="city-label" style="fill:#E53935;font-weight:bold;text-shadow:0 0 2px #fff, 1px 1px 2px #333;">葛仙村</text>
                             <text y="5" fill="white" font-size="9" text-anchor="middle" font-weight="bold">D4-5</text>
                         </g>
-                        <!-- 葛仙村景点标注 -->
-                        <g transform="translate(330, 85)">
+                        <g transform="translate(358, 88)">
                             <circle r="4" fill="#2ECC71" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#2ECC71" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">度假区</text>
                         </g>
-                        <g transform="translate(330, 110)">
+                        <g transform="translate(358, 106)">
                             <circle r="4" fill="#2ECC71" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))"/>
                             <text x="8" y="4" font-size="9" fill="#2ECC71" font-weight="bold" style="text-shadow:0 0 3px #fff, 1px 1px 2px #333;">烟花广场</text>
                         </g>
                         
-                        <!-- 返程标注 -->
-                        <text x="200" y="210" font-size="10" fill="#999" style="text-shadow:1px 1px 2px #333;">返程</text>
+                        <text x="230" y="200" font-size="10" fill="#555" style="text-shadow:0 0 2px #fff;">返程</text>
                     </svg>
                 </div>
                 
                 <!-- 图例 -->
                 <div class="map-legend">
+                    <div class="legend-item">
+                        <span style="display:inline-block;width:10px;height:10px;background:#E53935;border-radius:50%;"></span>
+                        <span style="color:#E53935;font-weight:bold;">途经城市</span>
+                    </div>
                     <div class="legend-item">
                         <span class="legend-line legend-drive"></span>
                         <span>自驾路线</span>
@@ -738,9 +732,9 @@
                     <h4>🚕 景点间交通</h4>
                     <p>赣州市区景点集中，福寿沟到郁孤台约2.3公里，打车约8-12元，10分钟可达。</p>
                     <div class="btn-group">
-                        <a href="https://uri.amap.com/marker?position=114.951942,25.855134&name=福寿沟博物馆" class="btn btn-navi">导航去福寿沟</a>
-                        <a href="amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=25.855134&slon=114.951942&sname=%E7%A6%8F%E5%AF%BF%E6%B2%9F%E5%8D%9A%E7%89%A9%E9%A6%86&dlon=114.938682&dlat=25.864921&dname=%E9%83%81%E5%AD%A4%E5%8F%B0%E5%85%AC%E5%9B%AD" class="btn btn-taxi">打车去郁孤台</a>
-                        <a href="https://uri.amap.com/marker?position=114.93987,25.86456&name=宋潮不夜城" class="btn btn-navi">导航去不夜城</a>
+                        <a href="https://uri.amap.com/marker?position=114.951942,25.855134&name=福寿沟博物馆" class="btn btn-navi">定位·福寿沟</a>
+                        <a href="https://uri.amap.com/marker?position=114.938682,25.864921&name=郁孤台公园" class="btn btn-taxi">定位·郁孤台</a>
+                        <a href="https://uri.amap.com/marker?position=114.93987,25.86456&name=宋潮不夜城" class="btn btn-navi">定位·不夜城</a>
                     </div>
                 </div>
                 
@@ -749,7 +743,7 @@
                         <h4>🏨 当晚住宿</h4>
                         <p>万隆国际公寓(章贡区万象城店)</p>
                     </div>
-                    <a href="amapuri://navi?sourceApplication=amap_mcp&lon=114.932573&lat=25.815657&dev=1&style=2" class="btn-hotel">导航</a>
+                    <a href="https://uri.amap.com/marker?position=114.932573,25.815657&name=万隆国际公寓(章贡区万象城店)" class="btn-hotel">定位</a>
                 </div>
             </div>
             
@@ -771,7 +765,7 @@
                     <h4>🚗 自驾前往南昌</h4>
                     <p>赣州 → 南昌颐朵酒店，全程高速约380公里，春节期间高速免费。</p>
                     <div class="btn-group">
-                        <a href="amapuri://navi?sourceApplication=amap_mcp&lon=116.017066&lat=28.673380&dev=1&style=2" class="btn btn-drive">导航去南昌-颐朵酒店</a>
+                        <a href="https://uri.amap.com/marker?position=116.017066,28.673380&name=颐朵酒店(江西师范大学太子殿地铁站店)" class="btn btn-drive">定位·南昌颐朵酒店</a>
                     </div>
                 </div>
                 
@@ -780,7 +774,7 @@
                         <h4>🏨 当晚住宿</h4>
                         <p>颐朵酒店(江西师范大学太子殿地铁站店)</p>
                     </div>
-                    <a href="amapuri://navi?sourceApplication=amap_mcp&lon=116.017066&lat=28.673380&dev=1&style=2" class="btn-hotel">导航</a>
+                    <a href="https://uri.amap.com/marker?position=116.017066,28.673380&name=颐朵酒店(江西师范大学太子殿地铁站店)" class="btn-hotel">定位</a>
                 </div>
             </div>
             
@@ -823,9 +817,9 @@
                     <p><strong>滕王阁 → 八一馆：</strong>地铁1号线，2站约9分钟（滕王阁站 → 万寿宫 → 八一馆站5号口出）</p>
                     <p style="margin-top:10px;"><strong>八一馆 → 省博物馆：</strong>地铁1号线，8站约24分钟（八一馆站5号口进 → 珠江路站2号口出，步行900米）</p>
                     <div class="btn-group">
-                        <a href="https://uri.amap.com/marker?position=115.881197,28.681332&name=滕王阁" class="btn btn-navi">导航去滕王阁</a>
-                        <a href="https://uri.amap.com/marker?position=115.890134,28.675419&name=八一起义纪念馆" class="btn btn-metro">导航去八一馆</a>
-                        <a href="https://uri.amap.com/marker?position=115.881823,28.705900&name=江西省博物馆" class="btn btn-metro">导航去省博物馆</a>
+                        <a href="https://uri.amap.com/marker?position=115.881197,28.681332&name=滕王阁" class="btn btn-navi">定位·滕王阁</a>
+                        <a href="https://uri.amap.com/marker?position=115.890134,28.675419&name=八一起义纪念馆" class="btn btn-metro">定位·八一馆</a>
+                        <a href="https://uri.amap.com/marker?position=115.881823,28.705900&name=江西省博物馆" class="btn btn-metro">定位·省博物馆</a>
                     </div>
                 </div>
                 
@@ -834,7 +828,7 @@
                         <h4>🏨 当晚住宿</h4>
                         <p>颐朵酒店(江西师范大学太子殿地铁站店)</p>
                     </div>
-                    <a href="amapuri://navi?sourceApplication=amap_mcp&lon=116.017066&lat=28.673380&dev=1&style=2" class="btn-hotel">导航</a>
+                    <a href="https://uri.amap.com/marker?position=116.017066,28.673380&name=颐朵酒店(江西师范大学太子殿地铁站店)" class="btn-hotel">定位</a>
                 </div>
             </div>
             
@@ -856,7 +850,7 @@
                     <h4>🚗 自驾前往亲情民宿</h4>
                     <p>南昌 → 葛仙山亲情民宿，全程高速约150公里，春节期间高速免费。</p>
                     <div class="btn-group">
-                        <a href="amapuri://navi?sourceApplication=amap_mcp&lon=117.691891&lat=28.138122&dev=1&style=2" class="btn btn-drive">导航去亲情民宿</a>
+                        <a href="https://uri.amap.com/marker?position=117.691891,28.138122&name=葛仙山亲情民宿(葛仙村店)" class="btn btn-drive">定位·亲情民宿</a>
                     </div>
                 </div>
                 
@@ -865,7 +859,7 @@
                         <h4>🏨 当晚住宿</h4>
                         <p>葛仙山亲情民宿(葛仙村店) · 评分4.8</p>
                     </div>
-                    <a href="amapuri://navi?sourceApplication=amap_mcp&lon=117.691891&lat=28.138122&dev=1&style=2" class="btn-hotel">导航</a>
+                    <a href="https://uri.amap.com/marker?position=117.691891,28.138122&name=葛仙山亲情民宿(葛仙村店)" class="btn-hotel">定位</a>
                 </div>
             </div>
             
@@ -880,7 +874,7 @@
                     <h4>🚗 前往葛仙村度假区</h4>
                     <p>从民宿出发前往景区停车场，车程约5分钟。</p>
                     <div class="btn-group">
-                        <a href="amapuri://navi?sourceApplication=amap_mcp&lon=117.693149&lat=28.096403&dev=1&style=2" class="btn btn-drive">导航去景区停车场</a>
+                        <a href="https://uri.amap.com/marker?position=117.693149,28.096403&name=葛仙村度假区停车场" class="btn btn-drive">定位·景区停车场</a>
                     </div>
                 </div>
                 
@@ -904,7 +898,7 @@
                     <h4>🚗 返程回广州</h4>
                     <p>葛仙村 → 广州，全程高速约600公里，夜间行车注意安全，可在服务区休息。</p>
                     <div class="btn-group">
-                        <a href="amapuri://navi?sourceApplication=amap_mcp&lon=113.264385&lat=23.129112&dev=1&style=2" class="btn btn-drive">导航去广州</a>
+                        <a href="https://uri.amap.com/marker?position=113.264385,23.129112&name=广州" class="btn btn-drive">定位·广州</a>
                     </div>
                 </div>
             </div>
@@ -924,8 +918,70 @@
         <!-- Footer -->
         <div class="footer">
             <p>© 2026 春节江西旅游攻略 | 制作时间: 2026年2月</p>
-            <p style="margin-top:5px;">数据来源：高德地图MCP</p>
+            <p style="margin-top:5px;">数据来源：高德地图 · 天气实时更新</p>
         </div>
     </div>
+    
+    <script>
+    (function(){
+        var AMAP_KEY = '35b357c5859bf23df258ffd670da331c';
+        var CACHE_KEY = 'kmTravel_weather';
+        var WEATHER_ICON = { '晴':'☀️','多云':'⛅','阴':'☁️','小雨':'🌧️','中雨':'🌧️','大雨':'🌧️','雷阵雨':'⛈️','阵雨':'🌦️' };
+        function iconFor(weather) {
+            if (!weather) return '☁️';
+            for (var k in WEATHER_ICON) if (weather.indexOf(k) !== -1) return WEATHER_ICON[k];
+            return '☁️';
+        }
+        function todayStr() {
+            var d = new Date();
+            return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+        }
+        function loadWeather() {
+            var today = todayStr();
+            var cache = null;
+            try {
+                var raw = localStorage.getItem(CACHE_KEY);
+                if (raw) {
+                    var obj = JSON.parse(raw);
+                    if (obj.date === today && obj.data) cache = obj.data;
+                }
+            } catch (e) {}
+            var cards = document.querySelectorAll('.weather-card[data-city]');
+            cards.forEach(function(card, i){
+                var adcode = card.getAttribute('data-city');
+                function fill(w) {
+                    if (!w) return;
+                    var tempEl = card.querySelector('.temp');
+                    if (tempEl) tempEl.textContent = (w.daytemp || w.temperature || '--') + '°C / ' + (w.nighttemp || '--') + '°C';
+                    var descEl = card.querySelector('.desc');
+                    if (descEl) descEl.textContent = (w.dayweather || w.weather || '') + (w.daypower ? ' · ' + w.daypower + '级' : '');
+                    var iconEl = card.querySelector('.icon');
+                    if (iconEl) iconEl.textContent = iconFor(w.dayweather || w.weather);
+                }
+                if (cache && cache[adcode]) {
+                    fill(cache[adcode]);
+                    return;
+                }
+                var url = 'https://restapi.amap.com/v3/weather/weatherInfo?city=' + adcode + '&key=' + AMAP_KEY + '&extensions=all';
+                fetch(url).then(function(r){ return r.json(); }).then(function(res){
+                    if (res.status !== '1' || !res.forecasts || !res.forecasts[0] || !res.forecasts[0].casts || !res.forecasts[0].casts[0]) return;
+                    var cast = res.forecasts[0].casts[0];
+                    fill(cast);
+                    try {
+                        var prev = {};
+                        var raw = localStorage.getItem(CACHE_KEY);
+                        if (raw) try { prev = JSON.parse(raw); } catch(e) {}
+                        if (prev.date !== today) prev = { date: today, data: {} };
+                        if (!prev.data) prev.data = {};
+                        prev.data[adcode] = cast;
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(prev));
+                    } catch (e) {}
+                }).catch(function(){});
+            });
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadWeather);
+        else loadWeather();
+    })();
+    </script>
 </body>
 </html>
